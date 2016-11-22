@@ -39,6 +39,7 @@ def get_colour_by_name(colur_name):
     return Template(HTML).substitute(obj)
 
 
+@app.route('/')
 @app.route('/random')
 def get_random_colour():
     return redirect(url_for('get_colour_by_id', colour_id=random.choice(db.all())['colorId']))
