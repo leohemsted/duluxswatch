@@ -11,7 +11,7 @@ HTML = """<!DOCTYPE html>
 <html>
   <head>
     <title>Dulux Swatch</title>
-    <link rel="StyleSheet" href="static/main.css" type="text/css">
+    <link rel="StyleSheet" href="/static/main.css" type="text/css">
   </head>
   <body style="background-color: #${rgb}">
     ${name} (id: ${id})
