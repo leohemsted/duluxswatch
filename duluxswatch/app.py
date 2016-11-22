@@ -2,7 +2,7 @@ import random
 from string import Template
 
 import tinydb
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, abort
 
 app = Flask(__name__)
 db = tinydb.TinyDB('./db.json')
@@ -26,7 +26,16 @@ HTML = """<!DOCTYPE html>
 @app.route('/id/<colour_id>')
 def get_colour_by_id(colour_id):
     obj = db.get(tinydb.Query().colorId == colour_id)
-    from pprint import pprint; pprint(obj)
+    if not obj:
+        abort(404)
+    return Template(HTML).substitute(obj)
+
+
+@app.route('/name/<colur_name>')
+def get_colour_by_name(colur_name):
+    obj = db.get(tinydb.Query().uriFriendlyName == colur_name)
+    if not obj:
+        abort(404)
     return Template(HTML).substitute(obj)
 
 
