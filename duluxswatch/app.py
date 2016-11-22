@@ -14,7 +14,11 @@ HTML = """<!DOCTYPE html>
     <link rel="StyleSheet" href="/static/main.css" type="text/css">
   </head>
   <body style="background-color: #${rgb}">
-    ${name} (id: ${id})
+    <div>
+        ${name}
+        <br/>
+        (id: <a href="https://www.dulux.co.uk/en/products/colour-tester#?selectedColor=${id}">${id}</a>)
+    </div>
   </body>
 </html>
 """
