@@ -3,6 +3,6 @@ __pycache__
 
 *.log
 
-db.json
+# db.json
 
 venv
