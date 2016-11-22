@@ -29,8 +29,6 @@ def get_colour_by_id(colour_id):
 
     if not obj:
         obj = fetch_colour(colour_id)
-        from pprint import pprint
-        pprint(obj)
         db.insert(obj)
 
     return Template(HTML).substitute(obj)
@@ -39,7 +37,10 @@ def fetch_colour(colour_id):
     """
     Fetch RGB/name info from dulux
     """
+    print('Collecting colour', colour_id)
     response = requests.get('https://www.dulux.co.uk/en/api/color/{0}'.format(colour_id))
     response.raise_for_status()
+    data = response.json()
+    print('Found:', data['uriFriendlyName'])
 
-    return response.json()
+    return data
