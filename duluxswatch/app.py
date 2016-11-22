@@ -1,8 +1,8 @@
+import random
 from string import Template
 
 import tinydb
-import requests
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 app = Flask(__name__)
 db = tinydb.TinyDB('./db.json')
@@ -17,7 +17,7 @@ HTML = """<!DOCTYPE html>
     <div>
         ${name}
         <br/>
-        (id: <a href="https://www.dulux.co.uk/en/products/colour-tester#?selectedColor=${id}">${id}</a>)
+        (id: <a href="https://www.dulux.co.uk/en/products/colour-tester#?selectedColor=${colorId}">${colorId}</a>)
     </div>
   </body>
 </html>
@@ -25,22 +25,11 @@ HTML = """<!DOCTYPE html>
 
 @app.route('/id/<colour_id>')
 def get_colour_by_id(colour_id):
-    obj = db.get(tinydb.Query().id == colour_id)
-
-    if not obj:
-        obj = fetch_colour(colour_id)
-        db.insert(obj)
-
+    obj = db.get(tinydb.Query().colorId == colour_id)
+    from pprint import pprint; pprint(obj)
     return Template(HTML).substitute(obj)
 
-def fetch_colour(colour_id):
-    """
-    Fetch RGB/name info from dulux
-    """
-    print('Collecting colour', colour_id)
-    response = requests.get('https://www.dulux.co.uk/en/api/color/{0}'.format(colour_id))
-    response.raise_for_status()
-    data = response.json()
-    print('Found:', data['uriFriendlyName'])
 
-    return data
+@app.route('/random')
+def get_random_colour():
+    return redirect(url_for('get_colour_by_id', colour_id=random.choice(db.all())['colorId']))
